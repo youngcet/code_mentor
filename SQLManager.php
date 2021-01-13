@@ -19,18 +19,27 @@
     
     function execute_sql_select ($select_fields, $where_record_fields_are, $where_record_values_are, $query): array
     {
-        $select_fields = implode (", ", $select_fields);
+        try
+        {
+            $select_fields = implode (", ", $select_fields); // convert the array into a comma separated string
         
-        $selectQuery = str_replace ('{{FIELDS_EQUAL}}', get_where_fields(mergeFields($where_record_fields_are, $where_record_values_are)), $query);
-        $selectQuery = str_replace('{{FIELDS_TO_SELECT}}', $select_fields, $selectQuery);
-        
-        return array ('select_query' => $selectQuery);
+            // replace the fields in the query string
+            $selectQuery = str_replace ('{{FIELDS_EQUAL}}', get_where_fields(mergeFields($where_record_fields_are, $where_record_values_are)), $query);
+            $selectQuery = str_replace('{{FIELDS_TO_SELECT}}', $select_fields, $selectQuery);
+
+            return array ('select_query' => $selectQuery);
+        }
+        catch (InvalidArraySizes $e)
+        {
+            return array ('error' => $e->getMessage());
+        }
     }
         
     function execute_sql_update ($fields, $value, $where_record_fields_are, $where_record_values_are, $my_update_query): array
     {
         try
         {
+            // replace the fields in the query string
             $update_query = str_replace ('{{UPDATE_FIELDS}}', get_update_fields(mergeFields($fields, $value)), $my_update_query);
             $update_query = str_replace ('{{FIELDS_EQUAL}}', get_where_fields(mergeFields($where_record_fields_are, $where_record_values_are)), $update_query);
             
@@ -49,6 +58,8 @@
         $mergedFields = array();
         $count = 0;
         
+        // loop through the $fields and use as keys
+        // use the index to get the value in $values array
         foreach ($fields as $field)
         {
             $mergedFields[trim($field)] = strip_tags($values[$count]);
@@ -58,6 +69,8 @@
         return $mergedFields;
     }
     
+    // this function subtitutes the fields and values and return the first part of the update query string
+    // field1 = 'value1', field2 = 'field2', this will substitute this {{UPDATE_FIELDS}}
     function get_update_fields ($values): string
     {
         $final_query = '';
@@ -75,6 +88,8 @@
         return rtrim ($final_query, ',');
     }
     
+    // this function subtitutes the fields and values and return the where clause condition part of the query string
+    // field1 = 'value1' AND field2 = 'field2', this will substitute {{FIELDS_EQUAL}}
     function get_where_fields ($values): string
     {
         $final_query = '';
@@ -96,6 +111,7 @@
             }
             else
             {
+                // TODO: make operator dynamic
                 $final_query .= "$key = $value AND ";
             }
             
