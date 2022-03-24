@@ -106,8 +106,7 @@
                     if (preg_match ("/$htmlList([^\"]+?)=%>/", $string, $listSection))
                     {
                         if (! isset ($data[$listsInString[1][$h]])) die (sprintf ('list [%s] not found', $listsInString[1][$h]));
-                        print_r($listSection[1]);
-                        die;
+                       
                         foreach (loadWithGenerator ($data[$listsInString[1][$h]]) as $itemArray)
                         {
                             $listContent .= SubstStringData (trim ($listSection[1]), $itemArray);
