@@ -1,0 +1,29 @@
+<html>
+    <body>
+        <h2>Table {users.table_title}</h2>
+        <table border="1" style="border-collapse: collapse;">
+            <tr>
+                <td>Name</td>
+                <td>Last Name</td>
+            </tr>
+            <%=list dataset="clients"
+            <tr>
+                <td>{clients.name}</td>
+                <td>{clients.lname}</td>
+            </tr>
+            =%>
+        </table>
+        <h2>List {users.list_title}</h2>
+        <ol>
+            <%=list dataset="users"
+            <li>{users.name} {users.desc}</li>
+            =%>
+        </ol>
+        <h2>List {products.list_title}</h2>
+        <ol>
+            <%=list dataset="products"
+            <li>{products.name} {products.desc}</li>
+            =%>
+        </ol>
+    </body>
+</html>
