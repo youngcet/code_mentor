@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>List of Clients</h2>
+
+    <table>
+        <tr>
+            <th>Client</th>
+            <th>Name</th>
+            <th>Balance</th>
+        </tr>
+        <%=list dataset="clients_test"
+            <tr>
+                <td>{client.id}</td>
+                <td>{client.name}</td>
+                <td>R{client.balance}</td>
+            </tr>
+        =%>
+    </table>
+    <h2>List of Clients with Balances > 0</h2>
+    <table>
+        <tr>
+            <th>Client</th>
+            <th>Name</th>
+            <th>Balance</th>
+        </tr>
+        <%=list dataset="clients"
+            <%if ("{client.balance}" > 0)
+                <tr>
+                    <td>{client.id}</td>
+                    <td>{client.name}</td>
+                    <td>R{client.balance}</td>
+                </tr>
+            endif%>
+        =%>
+    </table>
+
+</body>
+
+</html>
